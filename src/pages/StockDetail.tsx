@@ -38,6 +38,7 @@ const StockDetail = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('quarterly')
   const [showPriceOverlay, setShowPriceOverlay] = useState(false)
   const [thumbnailDialog, setThumbnailDialog] = useState<{ open: boolean; indicator: string }>({ open: false, indicator: '' })
+  const [currencyMode, setCurrencyMode] = useState<'TRY' | 'USD'>('TRY')
 
   // Mock stock data - in real app this would come from API
   const stockData = {
@@ -76,10 +77,10 @@ const StockDetail = () => {
   const fundamentalMetrics = [
     { name: 'P/E Ratio', value: '12.5', benchmark: '15.2', status: 'good' },
     { name: 'P/B Ratio', value: '1.8', benchmark: '2.1', status: 'good' },
-    { name: 'Dividend Yield', value: '3.2%', benchmark: '2.5%', status: 'excellent' },
-    { name: 'Debt/Equity', value: '0.45', benchmark: '0.60', status: 'good' },
     { name: 'Current Ratio', value: '1.85', benchmark: '1.50', status: 'excellent' },
+    { name: 'Debt/Equity', value: '0.45', benchmark: '0.60', status: 'good' },
     { name: 'Revenue Growth', value: '22.3%', benchmark: '12.0%', status: 'excellent' },
+    { name: 'EBITDA Margin', value: '24.0%', benchmark: '18.5%', status: 'excellent' },
   ]
 
   const sentimentAnalysis = {
@@ -427,7 +428,17 @@ const StockDetail = () => {
           <CardContent className="space-y-4">
             {/* Quarterly Metrics Table */}
             <div className="space-y-2">
-              <h4 className="font-semibold text-sm">Quarterly Metrics</h4>
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold text-sm">Quarterly Metrics</h4>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrencyMode(currencyMode === 'TRY' ? 'USD' : 'TRY')}
+                  className="h-6 text-xs"
+                >
+                  {currencyMode === 'TRY' ? 'TRY' : 'USD'}
+                </Button>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
@@ -441,32 +452,39 @@ const StockDetail = () => {
                   </thead>
                   <tbody>
                     <tr className="border-b">
-                      <td className="p-1">Revenue (₺M)</td>
-                      <td className="text-right p-1">3,250</td>
-                      <td className="text-right p-1">2,980</td>
-                      <td className="text-right p-1">2,750</td>
-                      <td className="text-right p-1">2,450</td>
+                      <td className="p-1">Revenue</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '3,250' : '108.3'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '2,980' : '99.3'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '2,750' : '91.7'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '2,450' : '81.7'}</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="p-1">Net Income (₺M)</td>
-                      <td className="text-right p-1">520</td>
-                      <td className="text-right p-1">465</td>
-                      <td className="text-right p-1">425</td>
-                      <td className="text-right p-1">385</td>
+                      <td className="p-1">Net Income</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '520' : '17.3'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '465' : '15.5'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '425' : '14.2'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '385' : '12.8'}</td>
                     </tr>
                     <tr className="border-b">
-                      <td className="p-1">EPS (₺)</td>
-                      <td className="text-right p-1">7.15</td>
-                      <td className="text-right p-1">6.38</td>
-                      <td className="text-right p-1">5.82</td>
-                      <td className="text-right p-1">5.25</td>
+                      <td className="p-1">EPS</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '7.15' : '0.24'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '6.38' : '0.21'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '5.82' : '0.19'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '5.25' : '0.18'}</td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="p-1">EBITDA</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '780' : '26.0'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '715' : '23.8'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '650' : '21.7'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '585' : '19.5'}</td>
                     </tr>
                     <tr>
-                      <td className="p-1">Dividend Yield (%)</td>
-                      <td className="text-right p-1">3.2</td>
-                      <td className="text-right p-1">3.0</td>
-                      <td className="text-right p-1">2.8</td>
-                      <td className="text-right p-1">2.5</td>
+                      <td className="p-1">Total Debt</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '1,850' : '61.7'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '1,920' : '64.0'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '1,980' : '66.0'}</td>
+                      <td className="text-right p-1">{currencyMode === 'TRY' ? '2,050' : '68.3'}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -496,7 +514,7 @@ const StockDetail = () => {
                       <SelectItem value="revenue">Revenue</SelectItem>
                       <SelectItem value="income">Net Income</SelectItem>
                       <SelectItem value="eps">EPS</SelectItem>
-                      <SelectItem value="dividend">Dividend Yield</SelectItem>
+                      <SelectItem value="ebitda">EBITDA</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -513,25 +531,25 @@ const StockDetail = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart data={
                     selectedFundamentalMetric === 'revenue' ? [
-                      { quarter: "Q3 '24", value: 2450, price: 185 },
-                      { quarter: "Q4 '24", value: 2750, price: 210 },
-                      { quarter: "Q1 '25", value: 2980, price: 245 },
-                      { quarter: "Q2 '25", value: 3250, price: 290 }
+                      { quarter: "Q3 '24", value: currencyMode === 'TRY' ? 2450 : 81.7, price: currencyMode === 'TRY' ? 185 : 6.2 },
+                      { quarter: "Q4 '24", value: currencyMode === 'TRY' ? 2750 : 91.7, price: currencyMode === 'TRY' ? 210 : 7.0 },
+                      { quarter: "Q1 '25", value: currencyMode === 'TRY' ? 2980 : 99.3, price: currencyMode === 'TRY' ? 245 : 8.2 },
+                      { quarter: "Q2 '25", value: currencyMode === 'TRY' ? 3250 : 108.3, price: currencyMode === 'TRY' ? 290 : 9.7 }
                     ] : selectedFundamentalMetric === 'income' ? [
-                      { quarter: "Q3 '24", value: 385, price: 185 },
-                      { quarter: "Q4 '24", value: 425, price: 210 },
-                      { quarter: "Q1 '25", value: 465, price: 245 },
-                      { quarter: "Q2 '25", value: 520, price: 290 }
+                      { quarter: "Q3 '24", value: currencyMode === 'TRY' ? 385 : 12.8, price: currencyMode === 'TRY' ? 185 : 6.2 },
+                      { quarter: "Q4 '24", value: currencyMode === 'TRY' ? 425 : 14.2, price: currencyMode === 'TRY' ? 210 : 7.0 },
+                      { quarter: "Q1 '25", value: currencyMode === 'TRY' ? 465 : 15.5, price: currencyMode === 'TRY' ? 245 : 8.2 },
+                      { quarter: "Q2 '25", value: currencyMode === 'TRY' ? 520 : 17.3, price: currencyMode === 'TRY' ? 290 : 9.7 }
                     ] : selectedFundamentalMetric === 'eps' ? [
-                      { quarter: "Q3 '24", value: 5.25, price: 185 },
-                      { quarter: "Q4 '24", value: 5.82, price: 210 },
-                      { quarter: "Q1 '25", value: 6.38, price: 245 },
-                      { quarter: "Q2 '25", value: 7.15, price: 290 }
+                      { quarter: "Q3 '24", value: currencyMode === 'TRY' ? 5.25 : 0.18, price: currencyMode === 'TRY' ? 185 : 6.2 },
+                      { quarter: "Q4 '24", value: currencyMode === 'TRY' ? 5.82 : 0.19, price: currencyMode === 'TRY' ? 210 : 7.0 },
+                      { quarter: "Q1 '25", value: currencyMode === 'TRY' ? 6.38 : 0.21, price: currencyMode === 'TRY' ? 245 : 8.2 },
+                      { quarter: "Q2 '25", value: currencyMode === 'TRY' ? 7.15 : 0.24, price: currencyMode === 'TRY' ? 290 : 9.7 }
                     ] : [
-                      { quarter: "Q3 '24", value: 2.5, price: 185 },
-                      { quarter: "Q4 '24", value: 2.8, price: 210 },
-                      { quarter: "Q1 '25", value: 3.0, price: 245 },
-                      { quarter: "Q2 '25", value: 3.2, price: 290 }
+                      { quarter: "Q3 '24", value: currencyMode === 'TRY' ? 585 : 19.5, price: currencyMode === 'TRY' ? 185 : 6.2 },
+                      { quarter: "Q4 '24", value: currencyMode === 'TRY' ? 650 : 21.7, price: currencyMode === 'TRY' ? 210 : 7.0 },
+                      { quarter: "Q1 '25", value: currencyMode === 'TRY' ? 715 : 23.8, price: currencyMode === 'TRY' ? 245 : 8.2 },
+                      { quarter: "Q2 '25", value: currencyMode === 'TRY' ? 780 : 26.0, price: currencyMode === 'TRY' ? 290 : 9.7 }
                     ]
                   }>
                     <XAxis dataKey="quarter" fontSize={10} />
@@ -624,21 +642,52 @@ const StockDetail = () => {
               </div>
             </div>
 
-            {/* Key Player Forecasts */}
+            {/* Key Player Forecasts - Split into two sections */}
             <div className="space-y-2">
               <h4 className="font-semibold text-sm">Key Player Forecasts</h4>
+              
+              {/* Credibility Order */}
               <div className="space-y-2">
-                {recommendations.brokerages.slice(0, 3).map((rec, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 border rounded">
-                    <div>
-                      <div className="font-semibold text-xs">{rec.name}</div>
-                      <div className="text-xs text-muted-foreground">Target: {rec.target}</div>
+                <h5 className="font-medium text-xs text-muted-foreground">Credibility Order</h5>
+                <div className="space-y-1">
+                  {[
+                    { name: 'İş Yatırım', action: 'HOLD', target: '₺190.00' },
+                    { name: 'Garanti Yatırım', action: 'BUY', target: '₺205.00' },
+                    { name: 'Yapı Kredi Yatırım', action: 'BUY', target: '₺215.00' },
+                  ].map((rec, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 border rounded">
+                      <div>
+                        <div className="font-semibold text-xs">{rec.name}</div>
+                        <div className="text-xs text-muted-foreground">Target: {rec.target}</div>
+                      </div>
+                      <Badge className={getRecommendationColor(rec.action)}>
+                        {rec.action}
+                      </Badge>
                     </div>
-                    <Badge className={getRecommendationColor(rec.action)}>
-                      {rec.action}
-                    </Badge>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Exchange Analysis Order */}
+              <div className="space-y-2">
+                <h5 className="font-medium text-xs text-muted-foreground">Exchange Analysis Order</h5>
+                <div className="space-y-1">
+                  {[
+                    { name: 'Akbank Yatırım', action: 'BUY', target: '₺200.00' },
+                    { name: 'Yapı Kredi Yatırım', action: 'BUY', target: '₺215.00' },
+                    { name: 'Garanti Yatırım', action: 'BUY', target: '₺205.00' },
+                  ].map((rec, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 border rounded">
+                      <div>
+                        <div className="font-semibold text-xs">{rec.name}</div>
+                        <div className="text-xs text-muted-foreground">Target: {rec.target}</div>
+                      </div>
+                      <Badge className={getRecommendationColor(rec.action)}>
+                        {rec.action}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

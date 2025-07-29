@@ -25,6 +25,7 @@ const PortfolioEvaluator = () => {
   const [selectedPortfolio, setSelectedPortfolio] = useState('portfolio-1')
   const [selectedBenchmark, setSelectedBenchmark] = useState('BIST100')
   const [timeInterval, setTimeInterval] = useState('monthly')
+  const [currencyMode, setCurrencyMode] = useState<'TRY' | 'USD'>('TRY')
   const [activeBenchmarks, setActiveBenchmarks] = useState({
     BIST100: true,
     BIST30: false,
